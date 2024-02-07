@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWE Message Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* Added to make the boxes stack vertically */
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f8f8;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            margin-top: 5px;
+            padding: 5px; /* Adjusted padding for input boxes */
+        }
+
+        button {
+            margin-top: 10px; /* Increased margin-top for the button */
+            padding: 15px; /* Increased padding for the button */
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            width: calc(100% - 12px); 
+        }
+
+        #sessionDuration, #chainId, #apiBaseUrl {
+            width: calc(100% - 12px); 
+            box-sizing: border-box; 
+        }
+
+        #outputResultContainer {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f8f8;
+        }
+
+        #outputResult {
+            margin-top: 20px;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SIWE Message Generator</h1>
+        
+        <label>
+            <input type="radio" name="generationOption" id="randomGenerateWallet" checked>
+            Randomly Generate Ethereum Wallet
+        </label>
+
+        <label>
+            <input type="radio" name="generationOption" id="connectWallet">
+            Connect Wallet
+        </label>
+
+        <br>
+
+        <label for="sessionDuration">Session Duration (in milliseconds): </label>
+        <input type="text" id="sessionDuration" value="14400000">
+
+        <br>
+
+        <label for="chainId">Chain ID: </label>
+        <input type="text" id="chainId" value="44787">
+
+        <br>
+
+        <label for="apiBaseUrl">Base URL of API: </label>
+        <input type="text" id="apiBaseUrl" value="https://cico-staging.bitmama.io">
+
+        <br>
+
+        <button id="outputJSONButton">Output JSON</button>
+    </div>
+
+    <div id="outputResultContainer">
+        <p>Copy/paste the following to use as your body for Postman /auth/login call!</p>
+        <div id="outputResult"></div>
+    </div>
+
+    <!-- <script defer type="module" src="dist/bundle.js"></script> -->
+</body>
+</html>

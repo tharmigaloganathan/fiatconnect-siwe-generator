@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIWE Message Generator</title>
+<script defer src="main.js"></script></head>
+<body>
+    <h1>SIWE Message Generator</h1>
+    
+    <label>
+        <input type="radio" name="generationOption" id="randomGenerateWallet" checked>
+        Randomly Generate Ethereum Wallet
+    </label>
+
+    <label>
+        <input type="radio" name="generationOption" id="connectWallet">
+        Connect Wallet
+    </label>
+
+    <br>
+
+    <label for="sessionDuration">Session Duration (in milliseconds): </label>
+    <input type="text" id="sessionDuration" value="14400000">
+
+    <br>
+
+    <label for="chainId">Chain ID: </label>
+    <input type="text" id="chainId" value="44787">
+
+    <br>
+
+    <label for="apiBaseUrl">Base URL of API: </label>
+    <input type="text" id="apiBaseUrl" value="https://cico-staging.bitmama.io">
+
+    <br>
+
+    <button id="outputJSONButton">Output JSON</button>
+
+    <div id="outputResult"></div>
+
+    <script defer type="module" src="dist/bundle.js"></script>
+</body>
+</html>
