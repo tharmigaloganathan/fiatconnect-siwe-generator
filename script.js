@@ -10,12 +10,11 @@ async function outputJSON() {
 
     // Create SIWE Message Using a Randomly Generated Ethereum Wallet
     if( randomGenerateWalletOption ) {
-        console.log("Creating SIWE /auth/login message body...");
+        console.log("Creating SIWE /auth/login message body using a randomly generate ethereum wallet...");
 
         // Defining variables
-        const wallet = ethers.Wallet.createRandom()
-        const expirationDate = new Date(Date.now() + Number(sessionDuration))
-        const headers = {}
+        const wallet = ethers.Wallet.createRandom();
+        const expirationDate = new Date(Date.now() + Number(sessionDuration));
 
         // Creating the SIWE message
         const siweMessage = new SiweMessage({
@@ -27,11 +26,11 @@ async function outputJSON() {
             chainId: chainId,
             nonce: generateNonce(),
             expirationTime: expirationDate.toISOString(),
-        })
+        });
 
         // Constructing the body of /auth/login in required format
-        const message = siweMessage.prepareMessage()
-        const signature = await wallet.signMessage(message)
+        const message = siweMessage.prepareMessage();
+        const signature = await wallet.signMessage(message);
 
         // Convert the object to JSON format
         const postRequest = {
@@ -45,15 +44,42 @@ async function outputJSON() {
     }
     // Create SIWE Message Using the User's Ethereum Wallet
     else {
+        console.log("Creating SIWE /auth/login message body using the user's metamask wallet...");
+
+        // Defining variables
         const provider = new BrowserProvider(window.ethereum);
+        const expirationDate = new Date(Date.now() + Number(sessionDuration));
+
         // Connecting the user's wallet
-        console.log("Connecting your wallet...");
         provider.send('eth_requestAccounts', [])
-          .catch(() => console.log('user rejected request'));
+          .catch(() => console.log('ERROR: User rejected sign-in request.'));
+        const wallet = await provider.getSigner();
 
-        const signer = await provider.getSigner();
+        // Creating the SIWE message
+        const siweMessage = new SiweMessage({
+            domain: new URL(apiBaseUrl).hostname,
+            address: wallet.address,
+            statement: 'Sign in with Ethereum',
+            uri: `${apiBaseUrl}/auth/login`,
+            version: '1',
+            chainId: chainId,
+            nonce: generateNonce(),
+            expirationTime: expirationDate.toISOString(),
+        });
+    
+        // Constructing the body of /auth/login in required format
+        const message = siweMessage.prepareMessage();
+        const signature = await wallet.signMessage(message);
 
+        // Convert the object to JSON format
+        const postRequest = {
+            message,
+            signature,
+        }
+        var jsonOutput = JSON.stringify(postRequest, null, 2);
 
+        // Display the JSON result on the page
+        document.getElementById("outputResult").innerText = jsonOutput;
     }
 
 }
